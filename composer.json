@@ -1,0 +1,34 @@
+{
+    "name": "Lin/prometheus",
+    "authors": [
+        {
+            "name": "xiaolin",
+            "email": "462441355@qq.com"
+        }
+    ],
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "jimdo/prometheus_client_php": "~0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lin\\Prometheus\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lin\\Prometheus\\LaravelProvider"
+            ],
+            "aliases": {
+            }
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "prefer-stable": true
+}
