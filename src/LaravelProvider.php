@@ -2,9 +2,11 @@
 
 namespace Lin\Prometheus;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use Lin\Prometheus\Adapter\RedisAdapter;
 use Prometheus\CollectorRegistry;
+use Prometheus\Storage\Redis;
 
 class LaravelProvider extends ServiceProvider
 {
@@ -24,8 +26,19 @@ class LaravelProvider extends ServiceProvider
         }
 
         $this->app->singleton('prometheus', function ($app) {
+
             $config = $app['config']['prometheus'];
-            return new CollectorRegistry(new RedisAdapter($config));
+
+            if (!isset($config['client']) || $config['client'] == 'predis') {
+                return new CollectorRegistry(new RedisAdapter($config));
+            }
+
+
+            $options = Arr::get(app(), 'config.database.redis.'.$config['conn']);
+
+            Redis::setPrefix($config['prefix']);
+
+            return new CollectorRegistry(new Redis($options));
         });
     }
 
